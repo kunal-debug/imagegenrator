@@ -9,6 +9,7 @@ import 'package:imagegenrator/utilities/apiservices.dart';
 import 'package:imagegenrator/utilities/bottomnavigationbar.dart';
 import 'package:imagegenrator/utilities/dimens.dart';
 import 'package:imagegenrator/utilities/styles.dart';
+import 'package:imagegenrator/view/cartPage.dart';
 import 'package:imagegenrator/view/imageview.dart';
 import '../utilities/colors.dart';
 
@@ -22,6 +23,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final homeCtrl = Get.put(homeController());
   late BuildContext ctx;
+  getSession() async {
+    STM().checkInternet(context, widget).then((value) {
+      if (value) {
+        homeCtrl.getDataCart();
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    getSession();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,13 +138,18 @@ class _HomePageState extends State<HomePage> {
                   ? Expanded(
                       child: AnimatedButton(
                         pressEvent: () {
-                          if (homeCtrl.addImgStatus.value == false) {
-                            final random = Random();
-                            homeCtrl.addImgToCart(
-                                homeCtrl.img.value, random.nextInt(90) + 10);
+                          if (homeCtrl.cartList.any((e) =>
+                          e['image'].toString() ==
+                              homeCtrl.img.value.toString())) {
+                             return;
                           }
+                          final random = Random();
+                          homeCtrl.addImgToCart(
+                              homeCtrl.img.value, random.nextInt(90) + 10);
                         },
-                        text: homeCtrl.addImgStatus.value == true
+                        text: homeCtrl.cartList.any((e) =>
+                        e['image'].toString() ==
+                            homeCtrl.img.value.toString())
                             ? 'Image Added'
                             : 'Add To Cart',
                         height: Dim().d100,

@@ -10,32 +10,28 @@ class homeController extends GetxController {
   var img = ''.obs;
   RxList cartList = [].obs;
   RxList historyList = [].obs;
-  RxBool addImgStatus = false.obs;
+  var totalPrice = 0.obs;
 
   Future getImgData({ctx}) async {
     var result = await STM().allApi(
         ctx: ctx, apitype: 'get', load: true, loadtitle: 'Loading img...');
     img.value = result['message'];
+
     /// when new image is fetched then directly added to history table
     final random = Random();
     addImgToHistory(img.value, random.nextInt(90) + 10);
-
-    /// for changing imageStatus to false
-    addImgStatus.value = false;
     print(result);
     update();
   }
 
-
   /// add image and price to cart table
-
   Future<void> addImgToCart(img, price) async {
     await Store.addCart(img, price);
-    addImgStatus.value = true;
     /// for update cart list
     getDataCart();
     update();
   }
+
   /// fetch image and price from cart table
   getDataCart() async {
     var data = await Store.getItemsCart();
@@ -49,11 +45,28 @@ class homeController extends GetxController {
     await Store.addHistory(img, price);
     update();
   }
+
   /// fetch image and price from history table
   getDataHistory() async {
     var data = await Store.getItemsHistory();
     historyList.value = data;
     print(historyList);
     update();
+  }
+
+  /// get total price from imgcart table
+  getTotalPrice() async {
+    totalPrice.value = (await Store.getTotalPrice()) as int;
+    print(totalPrice);
+  }
+
+  /// delete imgcart table items
+  deleteCart() async {
+    return await Store.deleteimgCartTable();
+  }
+
+  /// delete imgHistory table items
+  deleteHistory() async {
+    return await Store.deleteimgHistoryTable();
   }
 }

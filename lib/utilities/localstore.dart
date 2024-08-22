@@ -77,4 +77,12 @@ class Store {
     await db.delete("imgHistory");
   }
 
+
+  // totalprice
+  static Future<int> getTotalPrice() async {
+    var db = await Store.db();
+    var result = await db.rawQuery("SELECT SUM(price) as sum FROM imgCart");
+    return int.parse(result[0]['sum'].toString());
+  }
+
 }

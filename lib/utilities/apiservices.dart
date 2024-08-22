@@ -232,4 +232,27 @@ class STM {
       ),
     ];
   }
+
+  void successDialogWithAffinity(
+      BuildContext context, String message, Widget widget,funt) {
+    AwesomeDialog(
+        dismissOnBackKeyPress: false,
+        dismissOnTouchOutside: false,
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.scale,
+        headerAnimationLoop: true,
+        title: 'Success',
+        desc: message,
+        btnOkText: "OK",
+        btnOkOnPress: () {
+          Get.offAll(()=> widget);
+          funt;
+        },
+        btnOkColor: Colors.green)
+        .show();
+  }
+
+
+
 }

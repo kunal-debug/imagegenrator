@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,7 @@ import 'package:imagegenrator/utilities/colors.dart';
 import 'package:imagegenrator/utilities/dimens.dart';
 import 'package:imagegenrator/utilities/localstore.dart';
 import 'package:imagegenrator/utilities/styles.dart';
-
+import 'cartPage.dart';
 import 'imageview.dart';
 
 class HistoryPage extends StatefulWidget {
